@@ -45,7 +45,7 @@ export default function Canvas3D({ isGenerating, prompt }: Canvas3DProps) {
           fadeDistance={40}
         />
 
-        {/* تۆزی نێۆنی گەشاوە */}
+        {/* زیادکردنی تۆزی دیجیتاڵی */}
         <FloatingParticles />
 
         <group ref={cityGroupRef}>

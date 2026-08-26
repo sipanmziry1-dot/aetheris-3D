@@ -1,23 +1,26 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 export default function FloatingParticles() {
-  const count = 300;
+  const count = 400;
   const meshRef = useRef<THREE.Points>(null!);
 
-  const positions = new Float32Array(count * 3);
-  for (let i = 0; i < count * 3; i += 3) {
-    positions[i] = (Math.random() - 0.5) * 40;
-    positions[i + 1] = Math.random() * 20;
-    positions[i + 2] = (Math.random() - 0.5) * 40;
-  }
+  const points = useMemo(() => {
+    const p = new Float32Array(count * 3);
+    for (let i = 0; i < count * 3; i += 3) {
+      p[i] = (Math.random() - 0.5) * 50;
+      p[i + 1] = Math.random() * 25;
+      p[i + 2] = (Math.random() - 0.5) * 50;
+    }
+    return p;
+  }, [count]);
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.05;
+      meshRef.current.rotation.y += delta * 0.08;
     }
   });
 
@@ -26,14 +29,16 @@ export default function FloatingParticles() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          args={[positions, 3]}
+          count={points.length / 3}
+          array={points}
+          itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.15}
+        size={0.25}
         color="#00ffff"
         transparent
-        opacity={0.8}
+        opacity={0.9}
         blending={THREE.AdditiveBlending}
       />
     </points>
