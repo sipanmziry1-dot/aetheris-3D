@@ -6,11 +6,16 @@ export default function DigitalCity() {
   const [hovered, setHovered] = useState<number | null>(null);
   const [selected, setSelected] = useState<number | null>(null);
 
-  const buildings = Array.from({ length: 16 }).map((_, i) => ({
-    id: i,
-    position: [(i % 4) * 4 - 6, 0, Math.floor(i / 4) * 4 - 6] as [number, number, number],
-    height: Math.random() * 6 + 2,
-  }));
+  // دروستکردنی gridی 4x4 بە دووری گونجاو لە نێوانیاندا
+  const buildings = Array.from({ length: 16 }).map((_, i) => {
+    const col = i % 4;
+    const row = Math.floor(i / 4);
+    return {
+      id: i,
+      position: [(col - 1.5) * 5, 0, (row - 1.5) * 5] as [number, number, number],
+      height: (i % 3 + 1) * 3 + 2, // بەرزایی جیاواز بۆ باڵەخانەکان
+    };
+  });
 
   return (
     <group>
@@ -34,7 +39,7 @@ export default function DigitalCity() {
         >
           <boxGeometry args={[2, b.height, 2]} />
           <meshStandardMaterial
-            color={selected === b.id ? "#00ffff" : hovered === b.id ? "#ff007f" : "#0f172a"}
+            color={selected === b.id ? "#00ffff" : hovered === b.id ? "#ff007f" : "#0ea5e9"}
             wireframe={true}
           />
         </mesh>
