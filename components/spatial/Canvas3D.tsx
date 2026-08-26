@@ -6,13 +6,14 @@ import { OrbitControls, Grid } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import gsap from "gsap";
 import DigitalCity from "./DigitalCity";
+import FloatingParticles from "./FloatingParticles";
 
 interface Canvas3DProps {
   isGenerating?: boolean;
   prompt?: string;
 }
 
-export default function Canvas3D({ isGenerating }: Canvas3DProps) {
+export default function Canvas3D({ isGenerating, prompt }: Canvas3DProps) {
   const cityGroupRef = useRef<any>(null);
 
   useEffect(() => {
@@ -29,10 +30,9 @@ export default function Canvas3D({ isGenerating }: Canvas3DProps) {
     <div className="w-full h-full bg-slate-950">
       <Canvas 
         camera={{ position: [15, 12, 15], fov: 50 }}
-        gl={{ toneMappingExposure: 1.5 }}
+        gl={{ toneMappingExposure: 2 }}
       >
-        <ambientLight intensity={1} />
-        <directionalLight position={[10, 20, 15]} intensity={2} />
+        <ambientLight intensity={0.5} />
 
         <Grid
           infiniteGrid
@@ -45,17 +45,19 @@ export default function Canvas3D({ isGenerating }: Canvas3DProps) {
           fadeDistance={40}
         />
 
+        {/* تۆزی نێۆنی گەشاوە */}
+        <FloatingParticles />
+
         <group ref={cityGroupRef}>
-          <DigitalCity />
+          <DigitalCity prompt={prompt} />
         </group>
 
-        {/* کاریگەری پرشنگدار کردنی بەهێز */}
         <EffectComposer>
           <Bloom
-            intensity={2.5}
-            luminanceThreshold={0.01}
-            luminanceSmoothing={0.9}
-            mipmapBlur={true}
+            intensity={3.5}
+            luminanceThreshold={0}
+            luminanceSmoothing={0.8}
+            mipmapBlur
           />
         </EffectComposer>
 
