@@ -29,9 +29,7 @@ export default function FloatingParticles() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={points.length / 3}
-          array={points}
-          itemSize={3}
+          args={[points, 3]}
         />
       </bufferGeometry>
       <pointsMaterial
