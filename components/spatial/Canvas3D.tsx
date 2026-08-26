@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Grid } from "@react-three/drei";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import gsap from "gsap";
 import DigitalCity from "./DigitalCity";
 
@@ -26,27 +27,37 @@ export default function Canvas3D({ isGenerating }: Canvas3DProps) {
 
   return (
     <div className="w-full h-full bg-slate-950">
-      <Canvas camera={{ position: [15, 12, 15], fov: 50 }}>
-        {/* ڕووناکی هەورازی و ڕاستەوخۆ بۆ رووناککردنەوەی مەنهۆڵەکە */}
-        <ambientLight intensity={1.5} />
+      <Canvas 
+        camera={{ position: [15, 12, 15], fov: 50 }}
+        gl={{ toneMappingExposure: 1.5 }}
+      >
+        <ambientLight intensity={1} />
         <directionalLight position={[10, 20, 15]} intensity={2} />
-        <pointLight position={[-10, -10, -10]} intensity={1} color="#00ffff" />
 
-        {/* تۆڕی شین/دیجیتاڵی زەمینەکە */}
         <Grid
           infiniteGrid
           cellSize={1}
           cellThickness={1}
-          cellColor="#1e293b"
+          cellColor="#0f172a"
           sectionSize={5}
           sectionThickness={1.5}
-          sectionColor="#0ea5e9"
+          sectionColor="#0284c7"
           fadeDistance={40}
         />
 
         <group ref={cityGroupRef}>
           <DigitalCity />
         </group>
+
+        {/* کاریگەری پرشنگدار کردنی بەهێز */}
+        <EffectComposer>
+          <Bloom
+            intensity={2.5}
+            luminanceThreshold={0.01}
+            luminanceSmoothing={0.9}
+            mipmapBlur={true}
+          />
+        </EffectComposer>
 
         <OrbitControls
           enablePan={true}
